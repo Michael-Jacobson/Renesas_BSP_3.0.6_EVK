@@ -1,0 +1,28 @@
+From de7550c4c633e71704cd66871405bef70a31a1a0 Mon Sep 17 00:00:00 2001
+From: hienhuynh <hien.huynh.px@renesas.com>
+Date: Mon, 18 Dec 2023 16:37:40 +0700
+Subject: [PATCH 2/2] arm64: dts: renesas: r9a07g043: add full duplex mode
+ support for SSI1
+
+Add full duplex communication mode for SSI1.
+
+Signed-off-by: hienhuynh <hien.huynh.px@renesas.com>
+---
+ arch/arm64/boot/dts/renesas/r9a07g043.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g043.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
+index d48f2e9abbb1..ad3ad19c5345 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g043.dtsi
+@@ -267,6 +267,7 @@ ssi1: ssi@1004a000 {
+ 			resets = <&cpg R9A07G043_SSI1_RST_M2_REG>;
+ 			dmas = <&dmac 0x2659>, <&dmac 0x265a>;
+ 			dma-names = "tx", "rx";
++			full-duplex;
+ 			power-domains = <&cpg>;
+ 			#sound-dai-cells = <0>;
+ 			status = "disabled";
+-- 
+2.25.1
+

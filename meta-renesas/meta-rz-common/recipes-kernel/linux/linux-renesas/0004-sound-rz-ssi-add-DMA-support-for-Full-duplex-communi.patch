@@ -1,0 +1,64 @@
+From cb43272177ee7d0b372c011f69ff453017cfe52e Mon Sep 17 00:00:00 2001
+From: hienhuynh <hien.huynh.px@renesas.com>
+Date: Wed, 27 Mar 2024 10:43:40 +0700
+Subject: [PATCH] sound: rz-ssi: add DMA support for Full duplex communication
+ mode
+
+Add DMA support for Full duplex communication mode.
+Four DMA transfers should be queued before starting when
+error occurs.
+
+Signed-off-by: hienhuynh <hien.huynh.px@renesas.com>
+---
+ sound/soc/sh/rz-ssi.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
+index a121085f6704..8c2a183b2d94 100644
+--- a/sound/soc/sh/rz-ssi.c
++++ b/sound/soc/sh/rz-ssi.c
+@@ -640,6 +640,13 @@ static irqreturn_t rz_ssi_interrupt(int irq, void *data)
+ 			return IRQ_HANDLED;
+ 
+ 		if (irq == ssi->irq_int) { /* error or idle */
++			int i, count;
++
++			if (rz_ssi_is_dma_enabled(ssi))
++				count = 4;
++			else
++				count = 1;
++
+ 			if (ssi->capture.substream) {
+ 				if (ssisr & SSISR_RUIRQ)
+ 					strm_capture->uerr_num++;
+@@ -661,6 +668,17 @@ static irqreturn_t rz_ssi_interrupt(int irq, void *data)
+ 					     SSISR_TUIRQ | SSISR_ROIRQ |
+ 					     SSISR_RUIRQ, 0);
+ 
++			/* Add/remove more data */
++			if (ssi->capture.substream) {
++				for (i = 0; i < count; i++)
++					strm_capture->transfer(ssi, strm_capture);
++			}
++
++			if (ssi->playback.substream) {
++				for (i = 0; i < count; i++)
++					strm_playback->transfer(ssi, strm_playback);
++			}
++
+ 			/* Resume */
+ 			if (strm_playback)
+ 				rz_ssi_start(ssi, &ssi->playback);
+@@ -817,9 +835,6 @@ static int rz_ssi_dma_request(struct rz_ssi_priv *ssi, struct device *dev)
+ 	if (!rz_ssi_is_dma_enabled(ssi))
+ 		goto no_dma;
+ 
+-	if (ssi->is_full_duplex)
+-		goto no_dma;
+-
+ 	return 0;
+ 
+ no_dma:
+-- 
+2.25.1
+

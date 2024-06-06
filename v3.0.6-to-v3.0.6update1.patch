@@ -1,0 +1,22 @@
+diff -Naur v3.0.6g/meta-renesas/meta-rz-common/dynamic-layers/virtualization-layer/docker/docker-ce_git.bbappend v3.0.6g-update1/meta-renesas/meta-rz-common/dynamic-layers/virtualization-layer/docker/docker-ce_git.bbappend
+--- v3.0.6g/meta-renesas/meta-rz-common/dynamic-layers/virtualization-layer/docker/docker-ce_git.bbappend	2024-04-22 15:17:40.000000000 +0900
++++ v3.0.6g-update1/meta-renesas/meta-rz-common/dynamic-layers/virtualization-layer/docker/docker-ce_git.bbappend	2024-05-27 09:47:18.834555530 +0900
+@@ -1,4 +1,2 @@
+-do_install_append() {
+-	install -d ${D}${sysconfdir}/init.d
+-	install -m 0755 ${WORKDIR}/docker.init ${D}${sysconfdir}/init.d/docker.init
+-}
++INITSCRIPT_PACKAGES = "${@bb.utils.contains('DISTRO_FEATURES','systemd','', '${PN}',d)}"
++INITSCRIPT_NAME:${PN} = "${@bb.utils.contains('DISTRO_FEATURES','systemd','', 'docker.init',d)}"
+diff -Naur v3.0.6g/meta-renesas/meta-rz-common/include/core-image-renesas-base.inc v3.0.6g-update1/meta-renesas/meta-rz-common/include/core-image-renesas-base.inc
+--- v3.0.6g/meta-renesas/meta-rz-common/include/core-image-renesas-base.inc	2024-04-22 15:17:40.000000000 +0900
++++ v3.0.6g-update1/meta-renesas/meta-rz-common/include/core-image-renesas-base.inc	2024-05-27 09:47:18.834555530 +0900
+@@ -11,7 +11,7 @@
+ 
+ update_issue() {
+     # Set BSP version
+-    BSP_VERSION="3.0.6"
++    BSP_VERSION="3.0.6-update1"
+ 
+     # Set SoC and Board info
+     case "${MACHINE}" in
