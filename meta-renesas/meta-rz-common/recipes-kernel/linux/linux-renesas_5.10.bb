@@ -16,15 +16,11 @@ COMPATIBLE_MACHINE_rzg3s = "(rzg3s-dev|smarc-rzg3s)"
 KERNEL_URL = " \
     git://github.com/renesas-rz/rz_linux-cip.git"
 BRANCH = "${@oe.utils.conditional("IS_RT_BSP", "1", "rz-5.10-cip41-rt17", "rz-5.10-cip41",d)}"
-SRCREV = "${@oe.utils.conditional("IS_RT_BSP", "1", "ca73c38c8cc9f885d71d7aa3e4c492e3138305fb", "0db7a90de0883e06da1aa5554bc2ec17a5f89545",d)}"
+SRCREV = "${@oe.utils.conditional("IS_RT_BSP", "1", "ca73c38c8cc9f885d71d7aa3e4c492e3138305fb", "0260066d7d9f78abddca8f193c0598d0533d48c2",d)}"
 
 SRC_URI = "${KERNEL_URL};protocol=https;nocheckout=1;branch=${BRANCH}"
 
 SRC_URI_append_rzg2l = " \
-	file://0001-sound-rz-ssi-add-support-Full-duplex-communication.patch \
-	file://0002-arm64-dts-renesas-r9a07g043-add-full-duplex-mode-sup.patch \
-	file://0003-sound-rz-ssi-add-error-interrupt-handler-for-full-du.patch \
-	file://0004-sound-rz-ssi-add-DMA-support-for-Full-duplex-communi.patch \
 	file://0005-basic-differences-for-EVK-to-recreate-ssi-issue.patch \
 	"
 	

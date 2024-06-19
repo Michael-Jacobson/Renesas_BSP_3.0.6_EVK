@@ -4,30 +4,9 @@ Date: Thu, 6 Jun 2024 15:21:42 -0500
 Subject: [PATCH] basic differences for EVK to recreate ssi issue
 
 ---
- arch/arm64/boot/dts/renesas/r9a07g044.dtsi   |  2 ++
  arch/arm64/boot/dts/renesas/rzg2l-smarc.dtsi | 11 +++++++----
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ 1 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-index d29e905e1e6e..e046f782a157 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
-@@ -282,6 +282,7 @@ ssi0: ssi@10049c00 {
- 			resets = <&cpg R9A07G044_SSI0_RST_M2_REG>;
- 			dmas = <&dmac 0x2655>, <&dmac 0x2656>;
- 			dma-names = "tx", "rx";
-+			full-duplex;
- 			power-domains = <&cpg>;
- 			#sound-dai-cells = <0>;
- 			status = "disabled";
-@@ -303,6 +304,7 @@ ssi1: ssi@1004a000 {
- 			resets = <&cpg R9A07G044_SSI1_RST_M2_REG>;
- 			dmas = <&dmac 0x2659>, <&dmac 0x265a>;
- 			dma-names = "tx", "rx";
-+			full-duplex;
- 			power-domains = <&cpg>;
- 			#sound-dai-cells = <0>;
- 			status = "disabled";
 diff --git a/arch/arm64/boot/dts/renesas/rzg2l-smarc.dtsi b/arch/arm64/boot/dts/renesas/rzg2l-smarc.dtsi
 index 6f1860d14d73..c2a0187f6ade 100644
 --- a/arch/arm64/boot/dts/renesas/rzg2l-smarc.dtsi
